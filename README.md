@@ -49,7 +49,7 @@ You would notice that the application is not functional completely. So, your tas
 
 In particular you have to
 
-- **Complete the auth_required.js and no_auth_required.js** - You may notice that initially you are landed on the main page even when you are logged in. That is wrong. In this files you have to write code to redirect user to pages based on wheather he/she is authenticated or not.
+- **Complete the auth_required.js and no_auth_required.js** - You may notice that initially you are landed on the main page even when you are not logged in. That is wrong. In this files you have to write code to redirect user to pages based on whether he/she is authenticated or not.
 
 - **Login Function** - Currently only register function works. You have to complete the login function too.
 
