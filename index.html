@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
         rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -23,7 +24,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="background-color: rgba(255,255,255,0.5);">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Todo</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,8 +44,7 @@
                     <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="#" class="rounded-circle" id="avatar-image"><span id="profile-name"
-                                style="padding: 5px;">Loading ...</span></a>
+                            <img src="#" class="rounded-circle" id="avatar-image"><span class="todo-profile-name" id="profile-name">Loading ...</span></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
                         </div>
@@ -54,28 +54,24 @@
         </div>
     </nav>
     <center>
-        <div class="input-group mb-3" style="margin-top:90px;max-width:400px;">
+        <div class="input-group mb-3 todo-add-task">
             <input type="text" class="form-control" placeholder="Enter Task">
             <div class="input-group-append">
                 <button type="button" class="btn btn-outline-success" onclick="addTask()">Add Task</button>
             </div>
         </div>
-        <ul style="margin-bottom:30px;max-width:400px;" class="list-group">
-            <span class="badge badge-primary badge-pill"
-                style="margin-left:30%;padding-bottom:5px;padding-top:5px;margin-bottom:20px;max-width:170px;font-size:15px;">
+        <ul class="list-group todo-available-tasks">
+            <span class="badge badge-primary badge-pill todo-available-tasks-text">
                 Available Tasks
             </span>
 
 
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-1"
-                        style="border-top-right-radius:0px;border-bottom-right-radius:0px;max-width:300px;"
-                        type="text" class="form-control hideme" placeholder="Edit The Task">
+                    <input id="input-button-1" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
                     <div id="done-button-1"  class="input-group-append hideme">
-                        <button style="border-top-left-radius:0px;border-bottom-left-radius:0px;"
-                            class="btn btn-outline-secondary" type="button" onclick="updateTask(1)">Done</button>
+                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(1)">Done</button>
                     </div>
-                    <div id="task-1" style="max-width:260px;">
+                    <div id="task-1" class="todo-task">
                         Sample Task 1
                     </div>
 
@@ -94,15 +90,12 @@
 
 
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-2"
-                        style="border-top-right-radius:0px;border-bottom-right-radius:0px;max-width:300px;"
-                        type="text" class="form-control hideme" placeholder="Edit The Task">
+                    <input id="input-button-2" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
                     <div id="done-button-2" class="input-group-append hideme">
-                        <button style="border-top-left-radius:0px;border-bottom-left-radius:0px;"
-                            class="btn btn-outline-secondary" type="button" onclick="updateTask(2)">Done</button>
+                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(2)">Done</button>
                     </div>
 
-                    <div id="task-2" style="max-width:260px;">
+                    <div id="task-2" class="todo-task">
                         Sample Task 2
                     </div>
                     <span id="task-actions-2">
