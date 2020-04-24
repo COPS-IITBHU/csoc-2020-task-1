@@ -6,7 +6,7 @@ $.ajax({
         Authorization: 'Token ' + localStorage.getItem('token'),
     },
     type: "GET",
-    url: API_BASE_URL+"auth/profile/",
+    url: 'https://todo-app-csoc.herokuapp.com/'+"auth/profile/",
     success: function (response,textstatus,xhr) {
         if(xhr.status==200){
             window.location = "../";

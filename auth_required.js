@@ -6,7 +6,7 @@ $.ajax({
         Authorization: 'Token ' + localStorage.getItem('token'),
     },
     type: "GET",
-    url: +"auth/profile/",
+    url: 'https://todo-app-csoc.herokuapp.com/'+"auth/profile/",
     error:function () {
         window.location = "../login";
         displayErrorToast("Please Login First!");
