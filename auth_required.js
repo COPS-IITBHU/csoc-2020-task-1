@@ -8,7 +8,7 @@ $.ajax({
     type: "GET",
     url: 'https://todo-app-csoc.herokuapp.com/'+"auth/profile/",
     error:function () {
-        window.location = "../login";
+        window.location = "./login";
         displayErrorToast("Please Login First!");
     }
 });
