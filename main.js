@@ -23,7 +23,7 @@ const API_BASE_URL = 'https://todo-app-csoc.herokuapp.com/';
 
 function logout() {
     localStorage.removeItem('token');
-    window.location.href = '../login';
+    window.location.href = './login';
 }
 
 function registerFieldsAreValid(firstName, lastName, email, username, password) {
