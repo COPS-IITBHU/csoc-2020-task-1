@@ -6,7 +6,7 @@ $.ajax({
     url: API_BASE_URL+"auth/profile/",
     success: function (response,textstatus,xhr) {
         if(xhr.status==200){
-            window.location = "/";
+            window.location = "../";
             displaySuccessToast("Already Logged in!");
         }
     }
