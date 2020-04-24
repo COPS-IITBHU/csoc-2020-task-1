@@ -2,6 +2,9 @@
  * @todo Redirect the user to main page if token is present.
  */
 $.ajax({
+    headers: {
+        Authorization: 'Token ' + localStorage.getItem('token'),
+    },
     type: "GET",
     url: API_BASE_URL+"auth/profile/",
     success: function (response,textstatus,xhr) {
