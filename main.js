@@ -61,7 +61,7 @@ function register() {
             data: dataForApiRequest,
             success: function(data, status, xhr) {
                 localStorage.setItem('token', data.token);
-                window.location.href = '/';
+                window.location.href = '../';
             },
             error: function(xhr, status, err) {
                 displayErrorToast('An account using same email or username is already created');
