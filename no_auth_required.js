@@ -1,3 +1,5 @@
-/***
- * @todo Redirect the user to main page if token is present.
- */
+window.onload = () => {
+  if (localStorage.getItem("token")) {
+    window.location.href = "/";
+  }
+};
