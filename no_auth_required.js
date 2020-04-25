@@ -1,5 +1,3 @@
-window.onload = () => {
-  if (localStorage.getItem("token")) {
-    window.location.href = "/";
-  }
-};
+if (localStorage.getItem("token")) {
+  window.location.href = "/";
+}
