@@ -39,6 +39,9 @@ function registerFieldsAreValid(firstName, lastName, email, username, password) 
 }
 
 function register() {
+    const firstName = document.getElementById('inputFirstName').value.trim();
+    const lastName = document.getElementById('inputLastName').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
     const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
 
@@ -46,12 +49,14 @@ function register() {
         displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
+            name: firstName + " " + lastName,
+            email: email,
             username: username,
             password: password
         }
 
         $.ajax({
-            url: API_BASE_URL + 'auth/login/',
+            url: API_BASE_URL + 'auth/register/',
             method: 'POST',
             data: dataForApiRequest,
             success: function(data, status, xhr) {
@@ -71,9 +76,6 @@ function login() {
      * @todo 1. Write code for form validation.
      * @todo 2. Fetch the auth token from backend and login the user.
      */
-    const firstName = document.getElementById('inputFirstName').value.trim();
-    const lastName = document.getElementById('inputLastName').value.trim();
-    const email = document.getElementById('inputEmail').value.trim();
     const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
 
@@ -81,14 +83,12 @@ function login() {
         displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
-            name: firstName + " " + lastName,
-            email: email,
             username: username,
             password: password
         }
 
         $.ajax({
-            url: API_BASE_URL + 'auth/register/',
+            url: API_BASE_URL + 'auth/login/',
             method: 'POST',
             data: dataForApiRequest,
             success: function(data, status, xhr) {
