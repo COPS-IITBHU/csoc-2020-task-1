@@ -163,6 +163,7 @@ function addTask() {
 
 
 function editTask(id) {
+    document.getElementById(`input-button-${id}`).value=document.getElementById(`task-${id}`).innerText;
     document.getElementById('task-' + id).classList.add('hideme');
     document.getElementById('task-actions-' + id).classList.add('hideme');
     document.getElementById('input-button-' + id).classList.remove('hideme');
@@ -206,6 +207,7 @@ function updateTask(id) {
         title: tupdated
     }
 
+    if(tupdated){
     $.ajax({
         headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
@@ -221,6 +223,9 @@ function updateTask(id) {
             displayErrorToast('Problem in reaching Server. Please try again later.');
         }
     })
+}else{
+    displayErrorToast('Please fill the field before updating.');
 
+}
 
 }
