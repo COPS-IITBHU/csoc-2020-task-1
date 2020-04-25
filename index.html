@@ -55,18 +55,16 @@
     </nav>
     <center>
         <div class="input-group mb-3 todo-add-task">
-            <input type="text" class="form-control" placeholder="Enter Task">
+            <input type="text" id="inputTask" class="form-control" placeholder="Enter Task">
             <div class="input-group-append">
                 <button type="button" class="btn btn-outline-success" onclick="addTask()">Add Task</button>
             </div>
         </div>
-        <ul class="list-group todo-available-tasks">
-            <span class="badge badge-primary badge-pill todo-available-tasks-text">
-                Available Tasks
-            </span>
+        <ul class="list-group todo-available-tasks" id="listAfter">
+    
 
 
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+         <!--   <li class="list-group-item d-flex justify-content-between align-items-center">
                     <input id="input-button-1" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
                     <div id="done-button-1"  class="input-group-append hideme">
                         <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(1)">Done</button>
@@ -87,7 +85,8 @@
                         </button>
                     </span>
             </li>
-
+        -->
+        <!--
 
             <li class="list-group-item d-flex justify-content-between align-items-center">
                     <input id="input-button-2" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
@@ -110,7 +109,7 @@
                         </button>
                     </span>
             </li>
-
+        -->
 
         </ul>
     </center>
