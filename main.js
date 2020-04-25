@@ -88,12 +88,17 @@ function login() {
     user = document.getElementById("inputUsername").value;
     pass = document.getElementById("inputPassword").value;
 
+    if (user == "" || pass == "") {
+        displayErrorToast("Please fill all the fields");
+        return;
+    }
+    displayInfoToast("Please wait...")
     $.ajax({
         url: API_BASE_URL + "auth/login/",
         method: "POST",
         data: {
-            username: `${user}`,
-            password: `${pass}`,
+            username: user,
+            password: pass,
         },
         success: (data) => {
             localStorage.setItem("token", data.token);
@@ -101,7 +106,7 @@ function login() {
         },
         error: (data, status, error) => {
             document.getElementById("inputPassword").value = "";
-            displayErrorToast("Invalid Credentials");
+            displayErrorToast(`${data.status}: ${data.statusText}`);
         },
     });
 }
@@ -121,15 +126,19 @@ function addTask() {
         success: () => {
             inputText.value = ""
             fetchTask(inputText.value)
+            displaySuccessToast("Todo Added")
         },
+        error: (data) => {
+            displayErrorToast(`${data.status}: ${data.statusText}`);
+        }
     });
 }
 
 function editTask(id) {
-    document.getElementById("task-" + id).classList.add("hideme");
-    document.getElementById("task-actions-" + id).classList.add("hideme");
-    document.getElementById("input-button-" + id).classList.remove("hideme");
-    document.getElementById("done-button-" + id).classList.remove("hideme");
+    document.getElementById("task-" + id).classList.toggle("hideme");
+    document.getElementById("task-actions-" + id).classList.toggle("hideme");
+    document.getElementById("input-button-" + id).classList.toggle("hideme");
+    document.getElementById("done-button-" + id).classList.toggle("hideme");
 }
 
 function deleteTask(id) {
@@ -141,9 +150,10 @@ function deleteTask(id) {
         method: "DELETE",
         success: () => {
             document.getElementById("task-" + id).parentElement.remove();
+            displaySuccessToast("Todo Deleted")
         },
-        error: (data, status, error) => {
-            displayErrorToast(`${error}`);
+        error: (data) => {
+            displayErrorToast(`${data.status}: ${data.statusText}`);
         },
     });
 }
@@ -153,6 +163,11 @@ function updateTask(id) {
     taskBody = document.getElementById("task-" + id);
     taskButton = document.getElementById("task-actions-" + id);
     updateButton = document.getElementById("done-button-" + id);
+
+    if (updateText.value == "") {
+        editTask(id);
+        return;
+    }
 
     $.ajax({
         headers: {
@@ -164,28 +179,21 @@ function updateTask(id) {
             title: updateText.value,
         },
         success: (data) => {
-            document.getElementById("task-" + id).classList.remove("hideme");
-            document.getElementById("task-actions-" + id).classList.remove("hideme");
-            document.getElementById("input-button-" + id).classList.add("hideme");
-            document.getElementById("done-button-" + id).classList.add("hideme");
-
+            editTask(id);
 
             taskBody.id = `task-${data.id}`;
             taskBody.textContent = data.title;
-
 
             updateButton.id = "done-button-" + data.id;
 
             updateText.value = "";
             updateText.id = `input-button-${data.id}`;
             taskButton.id = "task-actions-" + data.id;
+            displaySuccessToast("Todo Updated")
         },
         error: (data, status, error) => {
-            displayErrorToast(`${error}`);
-            updateButton.classList.toggle("hideme");
-            updateText.classList.toggle("hideme");
-            taskBody.classList.toggle("hideme");
-            taskButton.classList.toggle("hideme");
+            displayErrorToast(`${data.status} ${data.statusText}`);
+            editTask(id)
         },
     });
 }

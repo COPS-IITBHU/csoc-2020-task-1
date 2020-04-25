@@ -10,6 +10,9 @@ function getTasks() {
         createCard(element)
       });
     },
+    error: (data) => {
+      displayErrorToast(`${data.status}: ${data.statusText}`);
+    },
   });
 }
 
