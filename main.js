@@ -79,7 +79,7 @@ function login() {
     const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
 
-    if (registerFieldsAreValid(firstName, lastName, email, username, password)) {
+    if (username != '' || password != '')  {
         displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
