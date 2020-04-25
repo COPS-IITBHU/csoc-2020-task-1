@@ -119,7 +119,8 @@ function addTask() {
             title: task,
         },
         success: () => {
-            inputText.value = " ";
+            inputText.value = ""
+            fetchTask(inputText.value)
         },
     });
 }
@@ -176,10 +177,7 @@ function updateTask(id) {
             updateButton.id = "done-button-" + data.id;
 
             updateText.value = "";
-
             updateText.id = `input-button-${data.id}`;
-
-
             taskButton.id = "task-actions-" + data.id;
         },
         error: (data, status, error) => {
@@ -188,6 +186,20 @@ function updateTask(id) {
             updateText.classList.toggle("hideme");
             taskBody.classList.toggle("hideme");
             taskButton.classList.toggle("hideme");
+        },
+    });
+}
+
+function fetchTask(task) {
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem("token"),
+        },
+        url: API_BASE_URL + "todo/",
+        method: "GET",
+        dataType: "json",
+        success: (data) => {
+            createCard(data[data.length - 1])
         },
     });
 }
