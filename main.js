@@ -80,7 +80,7 @@ function login() {
     const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
 
-    if (username != '' || password != '')  {
+    if (username != '' && password != '')  {
         displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
@@ -134,7 +134,7 @@ function addTask() {
                 displaySuccessToast('Task Added Successfully');
             },
             error: function(xhr, status, err) {
-                displayErrorToast('Unable to Add Task');
+                displayErrorToast('Unable to add task, please try again.');
             }
         })
     }
