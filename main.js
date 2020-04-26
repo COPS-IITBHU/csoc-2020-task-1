@@ -110,12 +110,6 @@ function login() {
         })
     }
 }
-function validityCheck(title){
-    if(title=== ''){
-        
-    }
-    return true;
-}
 function addTask() {
     /**
      * @todo Complete this function.
@@ -140,7 +134,6 @@ function addTask() {
             method: 'POST',
             data: dataForApiRequest,
             success: function(data, status, xhr){
-
                 displaySuccessToast('New task has been successfully added!');
                 getTasks();
             },
@@ -193,8 +186,10 @@ function updateTask(id) {
     console.log('in update-function');
     console.log(id);
     const newName = document.getElementById('input-button-' + id ).value.trim();
-    if(validityCheck(newName))
-    {
+    if(newName === ''){
+            displayErrorToast('Invalid name provided');
+    }
+    else{
         dataForApiRequest = {
             "title": newName
         }
