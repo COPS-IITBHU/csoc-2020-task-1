@@ -83,12 +83,12 @@ function login() {
         displayErrorToast("Enter both username and password");
         return;
     } else {
+        displayInfoToast("Please wait...");
         const dataForApiRequest = {
             username: username,
             password: password,
             Authorization: "Token " + localStorage.token
         }
-
         $.ajax({
             url: API_BASE_URL + "auth/login/",
             method: 'POST',
