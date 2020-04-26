@@ -60,6 +60,7 @@ function register() {
             method: 'POST',
             data: dataForApiRequest,
             success: function(data, status, xhr) {
+                console.log(data);
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
             },
@@ -96,26 +97,56 @@ function login() {
                 window.location.href = '/';
             },
             error: function(xhr, status, err) {
-                displayErrorToast('An account using same email or username is already created');
+                displayErrorToast('Invalid username and password');
             }
         })
     }
 
 }
-
+let index=2;
 function addTask() {
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to add the task to the backend server.
      * @todo 2. Add the task in the dom.
+     * 
      */
+    const task = document.getElementById('inputTask').value.trim();
+
+    if (task != '')  {
+        displayInfoToast("Please wait...");
+
+        const dataForApiRequest = {
+            title: task
+        }
+
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            
+            url: API_BASE_URL + 'todo/create/',
+            method: 'POST',
+            data: dataForApiRequest,
+            success: function(){
+                document.getElementById('inputTask').value='';
+                addSingleTask();
+                displaySuccessToast('Task Added Successfully');
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('Invalid username and password');
+            }
+        })
+    }
+    else
+        displayErrorToast('Enter Something');
 }
 
 function editTask(id) {
-    document.getElementById('task-' + id).classList.add('hideme');
-    document.getElementById('task-actions-' + id).classList.add('hideme');
-    document.getElementById('input-button-' + id).classList.remove('hideme');
-    document.getElementById('done-button-' + id).classList.remove('hideme');
+    document.getElementById('task-' + id).classList.toggle('hideme');
+    document.getElementById('task-actions-' + id).classList.toggle('hideme');
+    document.getElementById('input-button-' + id).classList.toggle('hideme');
+    document.getElementById('done-button-' + id).classList.toggle('hideme');
 }
 
 function deleteTask(id) {
@@ -124,7 +155,24 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
-}
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            
+            url: API_BASE_URL + 'todo/'+id+'/',
+            method: 'DELETE',
+            success: function(){
+                $('#'+id).remove();
+                displaySuccessToast('Task Removed Successfully');
+            },
+            error: function(xhr, status, err) {
+                
+                displayErrorToast('NOT FOUND');
+            }
+        })
+    }
+
 
 function updateTask(id) {
     /**
@@ -132,4 +180,67 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    const newTask = document.getElementById(`input-button-${id}`).value.trim();
+    const taskItem = document.getElementById("task-" + id);
+
+    if (newTask != '')  {
+        displayInfoToast("Please wait...");
+
+        const dataForApiRequest = {
+            title: newTask
+        }
+
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            
+            url: API_BASE_URL + 'todo/'+id+'/',
+            method: 'PUT',
+            data: dataForApiRequest,
+            success: function(data){
+                taskItem.textContent=data.title;
+                editTask(data.id);
+                displaySuccessToast('Task Updated');
+            },
+            error: function(xhr, status, err) {
+                editTask(data.id);
+            }
+        })
+    }
+    else
+        displayErrorToast('Enter Something');
+}
+function addSingleTask(){
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem("token"),
+        },
+        url: API_BASE_URL + "todo/",
+        method: "GET",
+        success: (data) => {
+            $('.list-group').append(`<li class="list-group-item d-flex justify-content-between align-items-center" id="`+data[data.length-1].id+`">
+            <input id="input-button-`+data[data.length-1].id+`" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
+            <div id="done-button-`+data[data.length-1].id+`"  class="input-group-append hideme">
+                <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(`+data[data.length-1].id+`)">Done</button>
+            </div>
+            <div id="task-`+data[data.length-1].id+`" class="todo-task">
+            `+data[data.length-1].title+`
+            </div>
+
+            <span id="task-actions-`+data[data.length-1].id+`">
+                <button style="margin-right:5px;" type="button" onclick="editTask(`+data[data.length-1].id+`)"
+                    class="btn btn-outline-warning">
+                    <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
+                        width="18px" height="20px">
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="deleteTask(`+data[data.length-1].id+`)">
+                    <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
+                        width="18px" height="22px">
+                </button>
+            </span>
+    </li>`);
+    document.getElementById(`input-button-${data[data.length-1].id}`).value=data[data.length-1].title;
+        },
+    });
 }
