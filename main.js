@@ -134,7 +134,7 @@ function addTask() {
                 displaySuccessToast('Task Added Successfully');
             },
             error: function(xhr, status, err) {
-                displayErrorToast('Invalid username and password');
+                displayErrorToast('Unable to Add Task');
             }
         })
     }
@@ -168,7 +168,7 @@ function deleteTask(id) {
             },
             error: function(xhr, status, err) {
                 
-                displayErrorToast('NOT FOUND');
+                displayErrorToast('Task Not Found');
             }
         })
     }
@@ -209,7 +209,7 @@ function updateTask(id) {
         })
     }
     else
-        displayErrorToast('Enter Something');
+        displayErrorToast('Enter New Task');
 }
 function addSingleTask(){
     $.ajax({
