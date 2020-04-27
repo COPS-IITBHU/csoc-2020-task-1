@@ -1,5 +1,3 @@
-
-
 # Todo Application - CSoC Dev Task 1
 
 ## Introduction
