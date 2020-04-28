@@ -71,19 +71,49 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const name = document.getElementById("inputUsername").value.trim();
+    const Password = document.getElementById("inputPassword").value;
+
+    const userdata = {
+        username : name,
+        password: Password
+    }
+    $.ajax({
+        url: API_BASE_URL + 'auth/login/',
+        method : 'POST',
+        data : userdata,
+        success : function(data,status,xhr){
+            localStorage.setItem('token',data.token);
+            window.location.href = '/';
+        },
+        error: function(xhr,status,err){
+            displayErrorToast('Invalid Username and Password');
+        }
+    })
+
 }
 
 function addTask() {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to add the task to the backend server.
-     * @todo 2. Add the task in the dom.
-     */
+    const Taskname = document.querySelector(".form-control").value.trim();
+    document.querySelector(".form-control").value="";
+    const Data = {
+        title: Taskname
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/create/',
+        method: 'POST',
+        data: Data,
+        success: function(status,xhr){
+            displaySuccessToast("Success Add Todo");
+            getTasks();
+        },
+        error: function(xhr,status,err){
+            displayErrorToast("Error!!");
+        }
+    })
 }
 
 function editTask(id) {
@@ -94,17 +124,47 @@ function editTask(id) {
 }
 
 function deleteTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to delete the task to the backend server.
-     * @todo 2. Remove the task from the dom.
-     */
+    const ID = {
+        id: id
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'DELETE',
+        data: ID,
+        success: function(status,xhr){
+            displaySuccessToast("Success Delete");
+            getTasks();
+        },
+        error: function(xhr,status,err){
+            displayErrorToast("Error delete!!");
+        }
+    })
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+    const newname = document.getElementById("input-button-"+id).value;
+    const newdata={
+        title: newname
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'PUT',
+        data: newdata,
+        success: function(data,status,xhr){
+            if(xhr.status==200){
+                displaySuccessToast("Success Update");
+                getTasks();
+            }    
+        },
+        error: function(xhr,status,err){
+            displayErrorToast("Error update!");
+        }
+
+    })
 }
