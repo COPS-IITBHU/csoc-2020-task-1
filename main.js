@@ -59,11 +59,11 @@ function register() {
             url: API_BASE_URL + 'auth/register/',
             method: 'POST',
             data: dataForApiRequest,
-            success: function(data, status, xhr) {
+            success: function (data, status, xhr) {
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
             },
-            error: function(xhr, status, err) {
+            error: function (xhr, status, err) {
                 displayErrorToast('An account using same email or username is already created');
             }
         })
@@ -71,19 +71,75 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const username = $('#inputUsername').val();
+    const password = $('#inputPassword').val();
+
+    //checking if both username and password entered i.e length>0
+    if (username.length == 0) {
+        displayInfoToast("Enter username");
+    } else if (password.length == 0) {
+        displayInfoToast("Enter password");
+    }
+    else {
+        //verifying credentials and fetching auth token
+        displayInfoToast("Verifying credentials...");
+        $.ajax({
+            url: API_BASE_URL + 'auth/login/',
+            method: 'POST',
+            data: {
+                username: $('#inputUsername').val(),
+                password: $('#inputPassword').val()
+            },
+            success: (data, status, xhr) => {
+                displaySuccessToast('Logging in...');
+                localStorage.setItem('token', data.token);
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 500);
+            },
+            error: (xhr, status, err) => {
+                if (400 <= xhr.status && xhr.status < 500)
+                    displayErrorToast('Invalid credentials');
+                else if (xhr.status == 0)
+                    displayErrorToast("Connection failure. Please check your internet connection...");
+                else
+                    displayErrorToast("Unknown error occured");
+            }
+        });
+    }
 }
 
 function addTask() {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to add the task to the backend server.
-     * @todo 2. Add the task in the dom.
-     */
+    const taskInput = $('#task-input').val();
+    if (taskInput.length == 0) {
+        displayInfoToast("Enter a task first")
+    } else if (taskInput.length > 255) {
+        displayInfoToast("Task length is too large")
+    }
+    else {
+        displayInfoToast("Adding task...")
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            url: API_BASE_URL + 'todo/create/',
+            method: 'POST',
+            data: {
+                title: taskInput
+            },
+            success: (data, status, xhr) => {
+                getTasks();
+                displaySuccessToast('Task added!');
+            },
+            error: (xhr, status, err) => {
+                if (xhr.status == 0) {
+                    displayErrorToast("Connection failure. Please check your internet connection...");
+                } else {
+                    displayErrorToast("Unknown error occured")
+                }
+            }
+        });
+    }
 }
 
 function editTask(id) {
@@ -94,17 +150,56 @@ function editTask(id) {
 }
 
 function deleteTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to delete the task to the backend server.
-     * @todo 2. Remove the task from the dom.
-     */
+    displayInfoToast("Deleting task...")
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/' + id + '/',
+        method: 'DELETE',
+        success: (data, status, xhr) => {
+            getTasks();
+            displaySuccessToast('Task deleted!');
+        },
+        error: (xhr, status, err) => {
+            if (xhr.status == 0) {
+                displayErrorToast("Connection failure. Please check your internet connection...");
+            } else {
+                displayErrorToast("Unknown error occured")
+            }
+        }
+    })
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+    const taskInput = $('#input-button-' + id).val();
+    if (taskInput.length == 0) {
+        displayInfoToast("Enter a task first")
+    } else if (taskInput.length > 255) {
+        displayInfoToast("Task length is too large")
+    }
+    else {
+        displayInfoToast("Updating task...")
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            url: API_BASE_URL + 'todo/' + id + '/',
+            method: 'PUT',
+            data: {
+                title: taskInput
+            },
+            success: (data, status, xhr) => {
+                getTasks();
+                displaySuccessToast('Task updated!');
+            },
+            error: (xhr, status, err) => {
+                if (xhr.status == 0) {
+                    displayErrorToast("Connection failure. Please check your internet connection...");
+                } else {
+                    displayErrorToast("Unknown error occured")
+                }
+            }
+        });
+    }
 }
