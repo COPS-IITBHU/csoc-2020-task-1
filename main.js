@@ -61,6 +61,7 @@ function register() {
             data: dataForApiRequest,
             success: function(data, status, xhr) {
                 localStorage.setItem('token', data.token);
+                displayInfoToast("Please wait...");
                 window.location.href = '/';
             },
             error: function(xhr, status, err) {
@@ -71,22 +72,71 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+
+    displayInfoToast("login with your registered username and password ")
+    displayInfoToast("New User? then Register yourself to start  !");
+
+    const username = document.getElementById("inputUsername").value.trim();
+    const password = document.getElementById("inputPassword").value;
+
+    if(username == "" || password ==""){
+        displayErrorToast("invalid username/password!");
+        return;
+    }
+
+     const dataForApiRequest={
+        username : username,
+        password : password
+     }
+     
+     $.ajax({
+        url : API_BASE_URL + 'auth/login/',
+        method : 'POST',
+        data : dataForApiRequest,
+        success : function(data, status, xhr) {
+            localStorage.setItem('token',data.token);
+            displayInfoToast("Please wait...");
+            window.location.href = '/';
+        },
+         error: function(xhr,status,err){
+                displayErrorToast("Please Enter a Valid username/password");
+                displayInfoToast("New User? then Register yourself to start  !");
+        }
+     })
 }
 
 function addTask() {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to add the task to the backend server.
-     * @todo 2. Add the task in the dom.
-     */
+   
+   text=document.getElementById("takeinput").value.trim();
+   if(text=""){
+    displayInfoToast("Opps ! You Haven't Entered the Task ! ");
+    return ;
+   }
+   const dataForApiRequest={
+    title: text,
+   }
+   $.ajax({
+    headers:{Authorization:"Token "+localStorage.getItem('token'),},
+     url: API_BASE_URL + 'todo/create/',
+     method: 'POST',
+     data: dataForApiRequest,
+     success : function(data,status,xhr){
+        displaySuccessToast("Task Added Succesfully!");
+        getTasks();
+     },
+     error: function(xhr,status,err){
+         if(xhr.status==0)
+            displayErrorToast("Inter Connection Lost");
+        else if(xhr.status==500)
+            displayErrorToast("Problem from server end! Please try later");
+     }
+
+   })
+   document.getElementById("takeinput").value = '';
 }
 
 function editTask(id) {
+    document.getElementById("input-button-"+id).value = document.getElementById('task-' + id).innerText;
     document.getElementById('task-' + id).classList.add('hideme');
     document.getElementById('task-actions-' + id).classList.add('hideme');
     document.getElementById('input-button-' + id).classList.remove('hideme');
@@ -94,17 +144,50 @@ function editTask(id) {
 }
 
 function deleteTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to delete the task to the backend server.
-     * @todo 2. Remove the task from the dom.
-     */
+   $.ajax({
+    headers:{Authorization:"Token "+localStorage.getItem('token'),},
+    url : API_BASE_URL+'todo/' + id + '/',
+    method : 'DELETE',
+    success : function(data,status,xhr){
+        displaySuccessToast("Task deleted!");
+        getTasks();
+     },
+     error: function(xhr,status,err){
+         if(xhr.status==0)
+            displayErrorToast("Inter Connection Lost");
+        else if(xhr.status==500)
+            displayErrorToast("Problem from server end! Please try later");
+     },
+
+   })
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+
+    let x = document.getElementById("input-button-"+id).value;
+    if(x=""){
+     displayInfoToast("Opps ! You Haven't Entered the Task ! ");
+     return ;
+ }
+      const dataForApiRequest={
+        id : id,
+        title: x,
+   }
+   $.ajax({
+    headers:{Authorization:"Token "+localStorage.getItem('token'),},
+    url: API_BASE_URL+'todo/' + id + '/',
+    method : 'PATCH',
+    data : dataForApiRequest,
+    success : function(data,status,xhr){
+        displaySuccessToast("Task Updated!");
+        getTasks();
+     },
+     error: function(xhr,status,err){
+         if(xhr.status==0)
+            displayErrorToast("Inter Connection Lost");
+        else if(xhr.status==500)
+            displayErrorToast("Problem from server end! Please try later");
+     },
+
+   })
 }
