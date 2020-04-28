@@ -78,8 +78,9 @@ function login() {
      */
      const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
-    if (username ==' ' || password ==' ')
+    if (username ==='' || password ==='')
     { displayErrorToast('Please fill the required fields');
+    
     }
     else {
     	const loginData={
@@ -93,6 +94,7 @@ function login() {
             success: function(data, status, xhr) {
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
+                displaySuccessToast('Login successfull');
             },
             error: function(xhr, status, err) {
                 displayErrorToast('Some error occured');
@@ -111,11 +113,11 @@ function addTask() {
      */
      var taskInput= document.getElementById('addTask').value.trim();
     
-    if(taskInput == ' '){
+    if(taskInput === ''){
         displayErrorToast('Please add some task!');
         
     }
-    else{
+    else if(taskInput !=' '){
         const taskData = {
             "title":taskInput
         }
@@ -174,7 +176,7 @@ function updateTask(id) {
      * @todo 2. Update the task in the dom.
      */
      const updatedTask = document.getElementById('input-button-' + id ).value.trim();
-    if(updatedTask == ' '){
+    if(updatedTask === ''){
             displayErrorToast('Please give valid input!');
     }
     else{
