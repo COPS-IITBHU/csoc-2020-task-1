@@ -114,7 +114,7 @@ function addTask() {
             getTasks();
         },
         error: function(xhr,status,error){
-            displayErrorToast("ERROR!");
+            displayErrorToast("Invalid input!");
         }
     });
     document.querySelector(".form-control").value="";
@@ -150,6 +150,11 @@ function deleteTask(id) {
 function updateTask(id) {
     const update = document.getElementById("input-button-"+id).value;
 
+    if(update===""){
+        displayErrorToast('Invalid input!');
+        return false;
+    }
+
     $.ajax({
         headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
@@ -160,10 +165,8 @@ function updateTask(id) {
             title:update,
         },
         success: function(data,status,xhr){
-            if(xhr.status==200){
                 displaySuccessToast("UPDATED!");
                 getTasks();
-            }    
         },
         error: function(xhr,status,err){
             displayErrorToast("ERROR!");
