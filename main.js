@@ -143,7 +143,7 @@ function deleteTask(id) {
      * @todo 2. Remove the task from the dom.
      */
     $.ajax({
-        url: API_BASE_URL + 'todo/' + id,
+        url: API_BASE_URL + 'todo/' + id + '/',
         headers: {
             Authorization: "Token " + localStorage.getItem('token')
         },
@@ -167,7 +167,7 @@ function updateTask(id) {
     new_title = $('input#input-button-'+id).val();
     if (new_title != ''){
         $.ajax({
-            url: API_BASE_URL + 'todo/' + id,
+            url: API_BASE_URL + 'todo/' + id + '/',
             headers: {
                 Authorization: "Token " + localStorage.getItem('token')
             },
