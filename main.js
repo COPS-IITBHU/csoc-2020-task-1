@@ -76,6 +76,27 @@ function login() {
      * @todo 1. Write code for form validation.
      * @todo 2. Fetch the auth token from backend and login the user.
      */
+    const username = document.getElementById('inputUsername').value.trim();
+    const password = document.getElementById('inputPassword').value;
+
+    const dataForApiRequest = {
+        username: username,
+        password: password
+    }
+
+    $.ajax({
+        url: API_BASE_URL + 'auth/login/',
+        method: 'POST',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            data.token=localStorage.getItem('token');
+            window.location.href = '/';
+        },
+        error: function(xhr, status, err) {
+            displayErrorToast('Either username or password is incorrect');
+        }
+    })
+
 }
 
 function addTask() {
