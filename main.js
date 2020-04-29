@@ -70,12 +70,48 @@ function register() {
     }
 }
 
+function loginFieldsAreValid(username, password) {
+    if (username === '' || password === '') {
+        displayErrorToast("Please fill all the fields correctly.");
+        return false;
+    }
+    return true;
+}
+
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const username = document.getElementById('inputUsername').value.trim();
+    const password = document.getElementById('inputPassword').value;
+
+    if (loginFieldsAreValid(username, password)) {
+        displayInfoToast("Please wait...");
+
+        const dataForApiRequest = {
+            username: username,
+            password: password
+        }
+
+        $.ajax({
+            url: API_BASE_URL + 'auth/login/',
+            method: 'POST',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                localStorage.setItem('token', data.token);
+                window.location.href = '/';
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('Credentials are incorrect!');
+            }
+        })
+    }
+}
+
+function taskFieldsAreValid(textItem) {
+    if (textItem === '') {
+        // displayErrorToast("1111111111111111111111111111111111111111111");
+        displayErrorToast("Task can't be empty!");
+        return false;
+    }
+    return true;
 }
 
 function addTask() {
@@ -102,9 +138,35 @@ function deleteTask(id) {
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+    // console.log("1111111111111111111111111111111111111111111");
+    const newText = document.getElementById('input-button-' + id).value;
+    
+    if (taskFieldsAreValid(newText)) {
+        displayInfoToast("Please wait...");
+
+        const dataForApiRequest = {
+            id: id,
+            title: newText
+        }
+
+        $.ajax({
+            url: API_BASE_URL + 'todo/' + id,
+            method: 'PUT',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                document.getElementById('task-' + id).value = newText;
+                document.getElementById('task-' + id).classList.remove('hideme');
+                document.getElementById('task-actions-' + id).classList.remove('hideme');
+                document.getElementById('input-button-' + id).classList.add('hideme');
+                document.getElementById('done-button-' + id).classList.add('hideme');
+                displayInfoToast("Task updated!");
+                // localStorage.setItem('token', data.token);
+                // window.location.href = '/';
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('Some error occured, try again!');
+                console.log(status);
+            }
+        })
+    }
 }
