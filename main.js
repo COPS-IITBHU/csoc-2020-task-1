@@ -107,7 +107,7 @@ function login() {
       data: dataAPI,
       method: "POST",
       success: function (data, status, xhr) {
-        alert(status, xhr);
+        //alert(status, xhr);
         //alert(xhr);
         window.localStorage.token = data.token;
         //Console.log(window.location.href);
