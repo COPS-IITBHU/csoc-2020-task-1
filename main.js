@@ -76,14 +76,53 @@ function login() {
      * @todo 1. Write code for form validation.
      * @todo 2. Fetch the auth token from backend and login the user.
      */
-}
+    const username = document.getElementById('inputUsername').value.trim();
+    const password = document.getElementById('inputPassword').value;
 
+    const dataForApiRequest = {
+        username: username,
+        password: password
+    }
+
+    $.ajax({
+        url: API_BASE_URL + 'auth/login/',
+        method: 'POST',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            localStorage.setItem('token',data.token);
+            window.location.href = '/';
+        },
+        error: function(xhr, status, err) {
+            displayErrorToast('Either username or password is incorrect');
+        }
+    })
+
+}
+var flag=false;
 function addTask() {
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to add the task to the backend server.
      * @todo 2. Add the task in the dom.
      */
+    
+    const intext=document.getElementById('ET').value.trim();
+    const dataForApiRequest={
+        title: intext
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/create/',
+        method: 'POST',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            document.getElementById('ET').value='';
+            flag=true;
+            getTasks();
+        }
+    })
 }
 
 function editTask(id) {
@@ -99,6 +138,20 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
+    dataForApiRequest={
+        id:id
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'DELETE',
+        data:dataForApiRequest,
+        success: function(data, status, xhr) {
+           document.getElementById(id).remove();
+        }
+    })
 }
 
 function updateTask(id) {
@@ -107,4 +160,24 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    const intext=document.getElementById('input-button-'+ id).value.trim();
+    const dataForApiRequest={
+        id: id,
+        title: intext
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'PUT',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            document.getElementById('task-' + id).classList.remove('hideme');
+            document.getElementById('task-actions-' + id).classList.remove('hideme');
+            document.getElementById('input-button-' + id).classList.add('hideme');
+            document.getElementById('done-button-' + id).classList.add('hideme');
+            document.getElementById('task-'+id).innerHTML=data.title;
+        }
+    })
 }
