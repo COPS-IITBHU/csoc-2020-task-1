@@ -89,7 +89,7 @@ function login() {
         method: 'POST',
         data: dataForApiRequest,
         success: function(data, status, xhr) {
-            data.token=localStorage.getItem('token');
+            localStorage.setItem('token',data.token);
             window.location.href = '/';
         },
         error: function(xhr, status, err) {
@@ -98,13 +98,31 @@ function login() {
     })
 
 }
-
+var flag=false;
 function addTask() {
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to add the task to the backend server.
      * @todo 2. Add the task in the dom.
      */
+    
+    const intext=document.getElementById('ET').value.trim();
+    const dataForApiRequest={
+        title: intext
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/create/',
+        method: 'POST',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            document.getElementById('ET').value='';
+            flag=true;
+            getTasks();
+        }
+    })
 }
 
 function editTask(id) {
@@ -120,6 +138,20 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
+    dataForApiRequest={
+        id:id
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'DELETE',
+        data:dataForApiRequest,
+        success: function(data, status, xhr) {
+           document.getElementById(id).remove();
+        }
+    })
 }
 
 function updateTask(id) {
@@ -128,4 +160,24 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    const intext=document.getElementById('input-button-'+ id).value.trim();
+    const dataForApiRequest={
+        id: id,
+        title: intext
+    }
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/'+id+'/',
+        method: 'PUT',
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            document.getElementById('task-' + id).classList.remove('hideme');
+            document.getElementById('task-actions-' + id).classList.remove('hideme');
+            document.getElementById('input-button-' + id).classList.add('hideme');
+            document.getElementById('done-button-' + id).classList.add('hideme');
+            document.getElementById('task-'+id).innerHTML=data.title;
+        }
+    })
 }
