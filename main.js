@@ -87,7 +87,6 @@ function login() {
         const dataForApiRequest = {
             username: username,
             password: password,
-            Authorization: "Token " + localStorage.token
         }
         $.ajax({
             url: API_BASE_URL + "auth/login/",
