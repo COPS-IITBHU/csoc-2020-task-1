@@ -8,7 +8,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <meta charset=utf-8>
@@ -55,63 +55,21 @@
     </nav>
     <center>
         <div class="input-group mb-3 todo-add-task">
-            <input type="text" class="form-control" placeholder="Enter Task">
+            <input id="newTask" type="text" class="form-control" placeholder="Enter Task">
             <div class="input-group-append">
                 <button type="button" class="btn btn-outline-success" onclick="addTask()">Add Task</button>
             </div>
         </div>
-        <ul class="list-group todo-available-tasks">
+        <ul class="list-group todo-available-tasks" id="taskList">
             <span class="badge badge-primary badge-pill todo-available-tasks-text">
                 Available Tasks
             </span>
-
-
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-1" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
-                    <div id="done-button-1"  class="input-group-append hideme">
-                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(1)">Done</button>
-                    </div>
-                    <div id="task-1" class="todo-task">
-                        Sample Task 1
-                    </div>
-
-                    <span id="task-actions-1">
-                        <button style="margin-right:5px;" type="button" onclick="editTask(1)"
-                            class="btn btn-outline-warning">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
-                                width="18px" height="20px">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="deleteTask(1)">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
-                                width="18px" height="22px">
-                        </button>
-                    </span>
-            </li>
-
-
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-2" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
-                    <div id="done-button-2" class="input-group-append hideme">
-                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(2)">Done</button>
-                    </div>
-
-                    <div id="task-2" class="todo-task">
-                        Sample Task 2
-                    </div>
-                    <span id="task-actions-2">
-                        <button style="margin-right:5px;" type="button" onclick="editTask(2)"
-                            class="btn btn-outline-warning">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
-                                width="18px" height="20px">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="deleteTask(2)">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
-                                width="18px" height="22px">
-                        </button>
-                    </span>
-            </li>
-
-
+            <div id="loadingButton">
+                <button class="btn btn-info" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+            </div>
         </ul>
     </center>
     <script src="init.js"></script>
