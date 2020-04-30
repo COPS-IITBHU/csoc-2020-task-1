@@ -129,7 +129,12 @@ function editTask(id) {
     document.getElementById('input-button-' + id).classList.remove('hideme');
     document.getElementById('done-button-' + id).classList.remove('hideme');
 }
-
+function doneEdit(id) {
+    document.getElementById('task-' + id).classList.remove('hideme');
+    document.getElementById('task-actions-' + id).classList.remove('hideme');
+    document.getElementById('input-button-' + id).classList.add('hideme');
+    document.getElementById('done-button-' + id).classList.add('hideme');
+}
 function deleteTask(id) {
     displayInfoToast('Task being deleted');
     const reqdata =  { id: id }
@@ -169,9 +174,11 @@ function updateTask(id) {
        headers: authhead,
        data: reqdata,
        success: function(data){
-         displaySuccessToast('Updated Task Successfully');
+         doneEdit(id);
          document.getElementById('task-'+id) = toUp;
-         editTask(id);
+         displaySuccessToast('Updated Task Successfully');
+
+         //doneEdit(id);
        },
        error: function(xhr,status,err){
          displayErrorToast('Unable to Update the task');
