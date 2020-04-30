@@ -3,4 +3,7 @@
  */
 
  if(localStorage.getItem('token'))
-    window.location.href='/';
+   {
+      console.log('Token hai!');
+      window.location.href='/';
+   }
