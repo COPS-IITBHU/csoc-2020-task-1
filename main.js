@@ -113,7 +113,7 @@ function addTask() {
       data: reqdata,
       success: function (data){
         displaySuccessToast('Added Task Successfully');
-        //getTasks();
+        getTasks();
         document.getElementById('add_task').value="";
       },
       error: function(xhr,status,err){
@@ -130,13 +130,13 @@ function editTask(id) {
     document.getElementById('done-button-' + id).classList.remove('hideme');
 }
 
-function deleteTask(id) {
+/*function deleteTask(id) {
     displayInfoToast('Task being deleted');
-    reqdata =  {id:id};
-    const authhead= {Authorization: 'Token '+localStorage.getElementById('token')}
+    const reqdata =  { id: id }
+    const authhead= { Authorization: 'Token '+localStorage.getElementById('token') }
     $.ajax({
       headers: authhead,
-      url: API_BASE_URL + 'todo/'+id+'/',
+      url: API_BASE_URL + 'todo/'+id+'/' ,
       method: 'DELETE',
       success: function(data){
           displaySuccessToast('Deleted Task Successfully');
@@ -151,6 +151,7 @@ function deleteTask(id) {
 }
 
 function updateTask(id) {
-    const t
+    return;
 
 }
+*/
