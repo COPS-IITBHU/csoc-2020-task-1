@@ -1,4 +1,10 @@
+var x=0;
+
 function getTasks() {
+    if(!x)
+        greet();
+    x++;
+    
     /***
      * @todo Fetch the tasks created by the user and display them in the dom.
      */
