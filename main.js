@@ -80,6 +80,9 @@ function loginFieldsAreValid(username, password) {
 
 function greet() {
     $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
         url: API_BASE_URL + 'auth/profile/',
         method: 'GET',
         success: function(data, status, xhr) {
@@ -87,7 +90,7 @@ function greet() {
             displaySuccessToast("Welcome "+localStorage.getItem('name')+"!");
         },
         error: function(xhr, status, err) {
-            displayErrorToast('Couldn\'t get name!');
+            displayErrorToast('Name not available!');
         }
     })
 }
