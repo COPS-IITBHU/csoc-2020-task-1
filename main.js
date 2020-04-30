@@ -218,6 +218,25 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
+    const authHeader={
+        Authorization: "Token " + localStorage.token
+    }
+
+    $.ajax({
+        url:API_BASE_URL +'todo/'+id+'/',
+        method:"DELETE",
+        headers:authHeader,
+        success:function(data){
+            document.getElementById("li-"+id).remove();
+            displaySuccessToast("Task succesfully Deleted.");
+        },
+        error: function(data){
+            displayErrorToast("Unable to delete task, please try again.");
+        }
+
+    })
+
+
 }
 
 function updateTask(id) {
@@ -226,5 +245,26 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    var new_title = document.getElementById("input-button-" + id).value;
+    const authHeader = {
+        Authorization: "Token " + localStorage.token
+    }
+    const dataForApiRequest = {
+        title:new_title
+    }
+    $.ajax({
+        url: API_BASE_URL + "todo/" + id + "/",
+        method: "PATCH",
+        headers: authHeader,
+        data: dataForApiRequest,
+        success: function(data){
+            displaySuccessToast("Task succesfully updated.");
+            document.getElementById('task-'+id).innerHTML = new_title;
+            editTask(id);
+        },
+        error: function(data){
+            displayErrorToast("Unable to update task, please try again.");
+        }
+    })
 
 }
