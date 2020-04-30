@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function displaySuccessToast(message) {
     iziToast.success({
         title: 'Success',
@@ -476,4 +475,4 @@ function updateTask(id) {
      * @todo 2. Update the task in the dom.
      */
 }
->>>>>>> f08e618ba10bb10560022212c1c1e328f8db07ae
+
