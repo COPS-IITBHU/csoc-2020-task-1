@@ -85,7 +85,7 @@ function login() {
       url:API_BASE_URL+'auth/login/',
       method:'POST',
       data:reqdata,
-      success: function(data, status, xhr){
+      success: function(data){
         localStorage.setItem('token',data.token);
         window.location.href = '/';
       },
@@ -98,21 +98,27 @@ function login() {
 }
 
 function addTask() {
+
     const toAdd = document.getElementById('add_task').value.trim();
-    var reqdata = {title:toAdd}
+    if(toAdd==""){
+      displayErrorToast("No Task to Add");
+      return;
+    }
+    const reqdata = {title:toAdd}
     displayInfoToast('Task being added.');
     $.ajax({
-      headers:{Authorization: 'Token'+localStorage.getItem('token')},
-      url: API_BASE_URL+'/todo/create/',
+      headers: {Authorization: 'Token '+localStorage.getItem('token')},
+      url: API_BASE_URL + 'todo/create/',
       method: 'POST',
       data: reqdata,
-      success: function (data,status, xhr){
+      success: function (data){
         displaySuccessToast('Added Task Successfully');
         //getTasks();
         document.getElementById('add_task').value="";
       },
       error: function(xhr,status,err){
-        displayErrorToast(xhr.status);
+        displayErrorToast('Unable to Add the task');
+        console.log(xhr.status);
       }
     })
 }
@@ -126,14 +132,25 @@ function editTask(id) {
 
 function deleteTask(id) {
     displayInfoToast('Task being deleted');
-    var reqdata =  {id:id};
+    reqdata =  {id:id};
+    const authhead= {Authorization: 'Token '+localStorage.getElementById('token')}
+    $.ajax({
+      headers: authhead,
+      url: API_BASE_URL + 'todo/'+id+'/',
+      method: 'DELETE',
+      success: function(data){
+          displaySuccessToast('Deleted Task Successfully');
+          document.getElementById('task-'+id).remove();
+      }
+      error: function(xhr,status,err){
+        displayErrorToast('Unable to Delete the task');
+      }
+    })
+
 
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+    const t
+
 }
