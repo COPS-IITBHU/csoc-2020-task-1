@@ -101,63 +101,76 @@ function login() {
      * @todo 2. Fetch the auth token from backend and login the user.
      */
 }
-
+var a=1;
 function addTask() {
-    var a=1;
-    var taskName= "task-" + a;
-    var taskName = document.getElementById('addName').value.trim();
-    if(localStorage.getItem('token') 
-     const dataForCreate = {
-         title: taskName,
-     }
+    const taskName = document.getElementById('inputTask').value.trim();
+    if (task!= ''){
+      const dataForCreate = {
+          title: taskName
+      }
 
        $.ajax({
         headers: {
             Authorization: "Token " + localStorage.getItem("token"),
         },
+
          url: API_BASE_URL + 'todo/create/',
          method: 'POST',
          data: dataForCreate, 
-         success: function(data, status, xhr) {
+         success: function() {
+            document.getElementById('inputTask').value='';
+            generate();
             displaySuccessToast('New task has been created successfully '); 
-            window.location.href = '/'; 
+            
          },   
-         error: function(xhr, status, err) {
+         error: function(){
             displayErrorToast('Sorry new task is not created');    
          } 
-        })   
-
-     generate(a);
-
+        }) 
+    }   
+    else{
+        displayErrorToast('New task cannot be blank.');
     }  
 }
-function generate(num){
-    id=num;
-    document.getElementById("gen").innerHTML =
-            `<li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-id" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
-                    <div id="done-button-id"  class="input-group-append hideme">
-                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(id)">Done</button>
-                    </div>
-                    <div id="task-id" class="todo-task"> 
-                        Sample Task id
-                    </div>
+     
 
-                    <span id="task-actions-id">
-                        <button style="margin-right:5px;" type="button" onclick="editTask(id)"
-                            class="btn btn-outline-warning">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
-                                width="18px" height="20px">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="deleteTask(id)">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
-                                width="18px" height="22px">
-                        </button>
-                    </span>
-            </li> `
+
+function generate(num){
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem("token"),
+        },
+        url: API_BASE_URL + "todo/",
+        method: "GET",
+        success: (data) => {
+         document.getElementById("gen").innerHTML =
+          `<li class="list-group-item d-flex justify-content-between align-items-center">
+            <input id="input-button-`+data[i].id+`" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
+            <div id="done-button-`+data[i].id+`"  class="input-group-append hideme">
+                <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(`+data[i].id+`)">Done</button>
+            </div>
+            <div id="task-`+data[i].id+`" class="todo-task"> 
+                Sample Task `+data[i].id+`
+            </div>
+
+            <span id="task-actions-`+data[i].id+`">
+                <button style="margin-right:5px;" type="button" onclick="editTask(`+data[i].id+`)"
+                    class="btn btn-outline-warning">
+                    <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
+                        width="18px" height="20px">
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="deleteTask(`+data[i].id+`)">
+                    <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
+                        width="18px" height="22px">
+                </button>
+            </span>
+         </li> `
+            },
+     });  
+}
     
 
-}
+
 
 function editTask(id) {
     document.getElementById('task-' + id).classList.add('hideme');
@@ -191,6 +204,32 @@ function deleteTask(id) {
 }
 
 function updateTask(id) {
+    const newTask = document.getElementById(`input-button-${id}`).value.trim();
+    const taskItem = document.getElementById("task-" + id);
+
+
+        const dataForApiRequest = {
+            title: newTask
+        }
+
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            
+            url: API_BASE_URL + 'todo/'+id+'/',
+            method: 'PUT',
+            data: dataForApiRequest,
+            success: function(data){
+                taskItem.textContent=data.title;
+                editTask(data.id);
+                displaySuccessToast('Task Updated');
+            },
+            error: function(xhr, status, err) {
+                editTask(data.id);
+            }
+        })
+}
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to update the task to the backend server.
