@@ -2,8 +2,8 @@
  * @todo Redirect the user to login page if token is not present.
  */
 
- if(localStorage.getItem('token'))
-   {
-      console.log('Token hai!');
-      window.location.href='/';
-   }
+//  if(localStorage.getItem('token'))
+//    {
+//       console.log('Token hai!');
+//       window.location.href='/';
+//    }
