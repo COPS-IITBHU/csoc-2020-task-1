@@ -78,12 +78,27 @@ function loginFieldsAreValid(username, password) {
     return true;
 }
 
+function greet() {
+    $.ajax({
+        url: API_BASE_URL + 'auth/profile/',
+        method: 'GET',
+        // data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            localStorage.setItem('name', data.name);
+            displaySuccessToast("Welcome "+localStorage.getItem('name'));
+        },
+        error: function(xhr, status, err) {
+            displayErrorToast('Couldn\'t get name!');
+        }
+    })
+}
+
 function login() {
     const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
 
     if (loginFieldsAreValid(username, password)) {
-        displayInfoToast("Please wait...");
+        // displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
             username: username,
@@ -95,6 +110,8 @@ function login() {
             method: 'POST',
             data: dataForApiRequest,
             success: function(data, status, xhr) {
+                // displaySuccessToast("Welcome")
+                greet();
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
             },
