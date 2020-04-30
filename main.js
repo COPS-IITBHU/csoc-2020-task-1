@@ -88,11 +88,14 @@ function greet() {
         success: function(data, status, xhr) {
             localStorage.setItem('name', data.name);
             displaySuccessToast("Welcome "+localStorage.getItem('name')+"!");
+            console.log(status,data);
         },
         error: function(xhr, status, err) {
             displayErrorToast('Name not available!');
+            console.log(status,err);
         }
     })
+    return;
 }
 
 function login() {
