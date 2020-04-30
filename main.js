@@ -73,13 +73,14 @@ function register() {
 function login() {
     const user = document.getElementById('inputUsername').value.trim();
     const pass = document.getElementById('inputPassword').value;
+    displayInfoToast("Logging In");
     if(user==""){
       displayErrorToast("Username is Required");
     }
     if(pass==""){
       displayErrorToast("Password is Required");
     }
-    const reqdata={username:user,password:pass};
+    var reqdata={username:user,password:pass};
     $.ajax({
       url:API_BASE_URL+'auth/login/',
       method:'POST',
@@ -90,18 +91,30 @@ function login() {
       },
       error:function(xhr, status, err){
         if (status==400) displayErrorToast('Invalid credentials');
-        else displayErrorToast('An Error Ocurred while Loading');
+        else displayErrorToast('An Error Ocurred while Loading ! ');
       }
     })
-    
+
 }
 
 function addTask() {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to add the task to the backend server.
-     * @todo 2. Add the task in the dom.
-     */
+    const toAdd = document.getElementById('add_task').value.trim();
+    var reqdata = {title:toAdd}
+    displayInfoToast('Task being added.');
+    $.ajax({
+      headers:{Authorization: 'Token'+localStorage.getItem('token')},
+      url: API_BASE_URL+'/todo/create/',
+      method: 'POST',
+      data: reqdata,
+      success: function (data,status, xhr){
+        displaySuccessToast('Added Task Successfully');
+        //getTasks();
+        document.getElementById('add_task').value="";
+      },
+      error: function(xhr,status,err){
+        displayErrorToast(xhr.status);
+      }
+    })
 }
 
 function editTask(id) {
@@ -112,11 +125,9 @@ function editTask(id) {
 }
 
 function deleteTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to delete the task to the backend server.
-     * @todo 2. Remove the task from the dom.
-     */
+    displayInfoToast('Task being deleted');
+    var reqdata =  {id:id};
+
 }
 
 function updateTask(id) {
