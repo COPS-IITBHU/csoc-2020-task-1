@@ -116,9 +116,9 @@ function login() {
             data: dataForApiRequest,
             success: function(data, status, xhr) {
                 // displaySuccessToast("Welcome")
-                localStorage.setItem('token', data.token);
                 displaySuccessToast('Login success!');
                 greet();
+                localStorage.setItem('token', data.token);
                 window.location.href = '/';
             },
             error: function(xhr, status, err) {
