@@ -78,6 +78,10 @@ function login() {
      */
      username = document.getElementById('inputUsername').value.trim();
     password = document.getElementById('inputPassword').value;
+    if(username ==='' && password ===''){
+        displayErrorToast('Required fields are incomplete!!');
+        return;
+    }
 
     if (username != '' && password != ''){
         displayInfoToast("Please wait...");
@@ -92,9 +96,10 @@ function login() {
             success : function(data, status, xhr){
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
+                displaySuccessToast('Successfully logged in :)');
             },
             error: function(xhr, status, err){
-                displayErrorToast('Invalid details!!');
+                displayErrorToast('Something went wrong Retry..');
             }
         })
     }
@@ -107,6 +112,10 @@ function addTask() {
      * @todo 2. Add the task in the dom.
      */
     task = $('div.todo-add-task input.form-control').val();
+     if(task === ''){
+        displayErrorToast('Please add some task!');
+        
+    }
     if (task != ''){
         $.ajax({
             method: 'POST',
@@ -118,7 +127,7 @@ function addTask() {
                 title: task
             },
             success: function(data, status, xhr){
-                displaySuccessToast('Task has been added!');
+                displaySuccessToast('New Task has been added!');
                 getTasks();
             },
             error: function(xhr, status, err){
@@ -164,8 +173,15 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
-     new_title = $('input#input-button-'+id).val();
-    if (new_title != ''){
+     task_updater = $('input#input-button-'+id).val();
+    if(task_updater === ''){
+            displayErrorToast('Please give valid input!');
+	    return 0;
+    }
+    else{
+        task_updater = {
+            "title": task_updater
+        }
         $.ajax({
             url: API_BASE_URL + 'todo/' + id + '/',
             headers: {
@@ -180,7 +196,7 @@ function updateTask(id) {
                 getTasks();
             },
             error: function(xhr, status, err){
-                displayErrorToast('Cannot update the task');
+                displayErrorToast('Something went wrong! Cannot update the task');
             }
         })
     }
