@@ -18,18 +18,18 @@ function getTasks() {
         success: function (data, status, xhr) {
 
             var added,task;
-            console.log(data)
+            console.log(data);
             document.getElementById('frame').task='<span class="badge badge-primary badge-pill todo-available-tasks-text">Available Tasks</span>'
 
-            added='<li class="list-group-item d-flex justify-content-between align-items-center"><input id="input-button-%id%" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task"><div id="done-button-%id%"  class="input-group-append hideme"><button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(%id%)">Done</button></div><div id="task-%id%" class="todo-task">%title%</div><span id="task-actions-%id%"><button style="margin-right:5px;" type="button" onclick="editTask(%id%)"class="btn btn-outline-warning"><img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"width="18px" height="20px"></button><button type="button" class="btn btn-outline-danger" onclick="deleteTask(%id%)"><img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"width="18px" height="22px"></button></span></li>'
+            task_added='<li class="list-group-item d-flex justify-content-between align-items-center"><input id="input-button-%id%" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task"><div id="done-button-%id%"  class="input-group-append hideme"><button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(%id%)">Done</button></div><div id="task-%id%" class="todo-task">%title%</div><span id="task-actions-%id%"><button style="margin-right:5px;" type="button" onclick="editTask(%id%)"class="btn btn-outline-warning"><img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"width="18px" height="20px"></button><button type="button" class="btn btn-outline-danger" onclick="deleteTask(%id%)"><img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"width="18px" height="22px"></button></span></li>'
 
             data.forEach(element => {
 
-                task=added.replace(/%id%/g,element.id);
+                task=task_added.replace(/%id%/g,element.id);
 
                 task=task.replace('%title%',element.title);
                 console.log(task);
-                document.getElementById('frame').insertAdjacentHTML('beforeend',task)
+                document.getElementById('frame').insertAdjacentHTML('beforeend',task);
             });
         }
 
