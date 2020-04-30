@@ -3,7 +3,4 @@
  */
 
 if(!(localStorage.getItem('token')))
-{
-    console.log('Token nahi hai!');
-    window.location.href='/'; 
-}
+    window.location.href='login/'; 
