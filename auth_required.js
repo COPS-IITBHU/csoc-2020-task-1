@@ -1,6 +1,6 @@
 if (localStorage.getItem('token') == undefined) {
     window.location.href = '/login';
 }
-else{
-  console.log(localStorage.getItem('token'));
-}
+//else{
+  //console.log(localStorage.getItem('token'));
+//}
