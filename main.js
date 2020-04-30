@@ -71,11 +71,29 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const user = document.getElementById('inputUsername').value.trim();
+    const pass = document.getElementById('inputPassword').value;
+    if(user==""){
+      displayErrorToast("Username is Required");
+    }
+    if(pass==""){
+      displayErrorToast("Password is Required");
+    }
+    const reqdata={username:user,password:pass};
+    $.ajax({
+      url:API_BASE_URL+'auth/login/',
+      method:'POST',
+      data:reqdata,
+      success: function(data, status, xhr){
+        localStorage.setItem('token',data.token);
+        window.location.href = '/';
+      },
+      error:function(xhr, status, err){
+        if (status==400) displayErrorToast('Invalid credentials');
+        else displayErrorToast('An Error Ocurred while Loading');
+      }
+    })
+    
 }
 
 function addTask() {
