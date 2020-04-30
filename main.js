@@ -26,8 +26,19 @@ function logout() {
     window.location.href = '/login';
 }
 
-function registerFieldsAreValid(firstName, lastName, email, username, password) {
+function registerFieldsAreValid(username, password) {
     if (firstName === '' || lastName === '' || email === '' || username === '' || password === '') {
+        displayErrorToast("Please fill all the fields correctly.");
+        return false;
+    }
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        displayErrorToast("Please enter a valid email address.")
+        return false;
+    }
+    return true;
+}
+function loginFieldsAreValid(username, password) {
+    if (username === '' || password === '') {
         displayErrorToast("Please fill all the fields correctly.");
         return false;
     }
@@ -71,11 +82,30 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const username = document.getElementById('inputUsername').value.trim();
+    const password = document.getElementById('inputPassword').value;
+
+    if (loginFieldsAreValid(username, password)) {
+        displayInfoToast("Please wait...");
+
+        const dataForApiRequest = {
+            username: username,
+            password: password
+        }
+
+        $.ajax({
+            url: API_BASE_URL + 'auth/login/',
+            method: 'POST',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                localStorage.setItem('token', data.token);
+                window.location.href = '/';
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('An account using this email or username has not been registered.');
+            }
+        })
+    }
 }
 
 function addTask() {
@@ -107,4 +137,27 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
-}
+     const task= document.getElementById('task-'+id).value.trim();
+
+        const dataForApiRequest = {
+            id:id
+            title:task
+        }
+
+        $.ajax({
+            url: API_BASE_URL + 'todo/'+id,
+            method: 'PUT',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                //localStorage.setItem('token', data.token);
+                //window.location.href = '/';
+                document.getElementById('task-' + id).classList.add('hideme');
+                document.getElementById('task-actions-' + id).classList.add('hideme');
+                document.getElementById('input-button-' + id).classList.remove('hideme');
+                document.getElementById('done-button-' + id).classList.remove('hideme');
+            }
+        })
+    }
+    
+
+
