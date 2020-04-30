@@ -180,13 +180,13 @@ function deleteTask(id) {
 
 function updateTask(id) {
     // console.log("1111111111111111111111111111111111111111111");
-    const newText = document.getElementById('input-button-' + id).value;
+    const newText = document.getElementById('input-button-' + id).value.trim();
     
     if (taskFieldsAreValid(newText)) {
         displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
-            id: id,
+            // id: id,
             title: newText
         }
 
@@ -194,16 +194,17 @@ function updateTask(id) {
             headers: {
                 Authorization: 'Token ' + localStorage.getItem('token'),
             },
-            url: API_BASE_URL + 'todo/' + id,
-            method: 'PUT',
+            url: API_BASE_URL + 'todo/' + id + '/',
+            method: 'PATCH',
             data: dataForApiRequest,
             success: function(data, status, xhr) {
-                document.getElementById('task-' + id).value = newText;
-                document.getElementById('task-' + id).classList.remove('hideme');
-                document.getElementById('task-actions-' + id).classList.remove('hideme');
-                document.getElementById('input-button-' + id).classList.add('hideme');
-                document.getElementById('done-button-' + id).classList.add('hideme');
-                displayInfoToast("Task updated!");
+                // document.getElementById('task-' + id).value = newText;
+                // document.getElementById('task-' + id).classList.remove('hideme');
+                // document.getElementById('task-actions-' + id).classList.remove('hideme');
+                // document.getElementById('input-button-' + id).classList.add('hideme');
+                // document.getElementById('done-button-' + id).classList.add('hideme');
+                displaySuccessToast("Task updated!");
+                getTasks();
                 // localStorage.setItem('token', data.token);
                 // window.location.href = '/';
             },
