@@ -123,9 +123,32 @@ function login() {
 function addTask() {
   /**
    * @todo Complete this function.
-   * @todo 1. Send the request to add the task to the backend server.
+   * @todo 1. Send the request to add the task to the backend server.   Authorization:"Token "+localStorage.getItem('token')
    * @todo 2. Add the task in the dom.
    */
+  //console.log("addTask");
+  //console.log("Token " + localStorage.getItem("token"));
+  const task = document.getElementById("addTask").value;
+  //console.log(task);
+
+  const taskData = {
+    title: task,
+  };
+  $.ajax({
+    headers: {
+      Authorization: "Token " + localStorage.getItem("token"),
+    },
+    url: API_BASE_URL + "todo/create/",
+    method: "POST",
+    data: taskData,
+    success: function (data, status, xhr) {
+      displayInfoToast("Task Added Successfully!");
+      window.location.reload();
+    },
+    error: function (xhr, status, data) {
+      console.log(xhr);
+    },
+  });
 }
 
 function editTask(id) {
@@ -141,12 +164,43 @@ function deleteTask(id) {
    * @todo 1. Send the request to delete the task to the backend server.
    * @todo 2. Remove the task from the dom.
    */
+
+  $.ajax({
+    url: API_BASE_URL + "todo/" + id + "/",
+    method: "DELETE",
+    headers: {
+      Authorization: "Token " + localStorage.getItem("token"),
+    },
+    success: function (data, status, xhr) {
+      displayInfoToast("Task deleted Successfully");
+      window.location.reload();
+    },
+    error: function (xhr, status, data) {
+      console.log(xhr);
+      displayErrorToast("Some error happened");
+    },
+  });
 }
 
 function updateTask(id) {
-  /**
-   * @todo Complete this function.
-   * @todo 1. Send the request to update the task to the backend server.
-   * @todo 2. Update the task in the dom.
-   */
+  const update = document.getElementById("input-button-" + id).value;
+
+  dataAPI = {
+    title: update,
+  };
+  $.ajax({
+    url: API_BASE_URL + "todo/" + id + "/",
+    headers: {
+      Authorization: "Token " + localStorage.getItem("token"),
+    },
+    method: "PATCH",
+    data: dataAPI,
+    success: function (data, status, xhr) {
+      displaySuccessToast("Task updated!");
+      window.location.reload();
+    },
+    error: function (xhr, status, data) {
+      displayErrorToast("Some Error has occured");
+    },
+  });
 }
