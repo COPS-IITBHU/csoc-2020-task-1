@@ -149,9 +149,34 @@ function deleteTask(id) {
 
 
 }
-/*
+
 function updateTask(id) {
-    return;
+    const toUp = document.getElementById('input-button-'+id ).value.trim();
+    if(toUp=="")
+    {
+      displayErrorToast('The Text is empty , Delete it instead');
+      return;
+    }
+    const authhead= {
+      Authorization: 'Token '+localStorage.getItem('token')
+     }
+     const reqdata={
+       title:toUp
+     }
+     $.ajax({
+       url: API_BASE_URL+'todo/'+id+'/',
+       method: "PATCH",
+       headers: authhead,
+       data: reqdata,
+       success: function(data){
+         displaySuccessToast('Updated Task Successfully');
+         document.getElementById('task-'+id) = toUp;
+         editTask(id);
+       },
+       error: function(xhr,status,err){
+         displayErrorToast('Unable to Update the task');
+       }
+     })
+
 
 }
-*/

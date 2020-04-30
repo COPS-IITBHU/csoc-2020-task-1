@@ -29,8 +29,9 @@ function getTasks() {
         success: function(data,xhr,status){
             tasks=data;
             for (const a in tasks){
-                ul.innerHTML+= tasktmplt(tasks[a].id,tasks[a].title);
-
+                if(document.getElementById('item-'+tasks[a].id)==null){
+                  ul.innerHTML+= tasktmplt(tasks[a].id,tasks[a].title);
+              }
             }
           },
         error: function(xhr,status,err){
