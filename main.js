@@ -82,10 +82,10 @@ function greet() {
     $.ajax({
         url: API_BASE_URL + 'auth/profile/',
         method: 'GET',
-        // data: dataForApiRequest,
+        data: dataFromApi,
         success: function(data, status, xhr) {
             localStorage.setItem('name', data.name);
-            displaySuccessToast("Welcome "+localStorage.getItem('name'));
+            displaySuccessToast("Welcome "+localStorage.getItem('name')+"!");
         },
         error: function(xhr, status, err) {
             displayErrorToast('Couldn\'t get name!');
@@ -111,9 +111,9 @@ function login() {
             data: dataForApiRequest,
             success: function(data, status, xhr) {
                 // displaySuccessToast("Welcome")
-                greet();
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
+                greet();
             },
             error: function(xhr, status, err) {
                 displayErrorToast('Credentials are incorrect!');
@@ -125,13 +125,37 @@ function login() {
 function taskFieldsAreValid(textItem) {
     if (textItem === '') {
         // displayErrorToast("1111111111111111111111111111111111111111111");
-        displayErrorToast("Task can't be empty!");
+        displayErrorToast('Task title can\'t be empty!');
         return false;
     }
     return true;
 }
 
 function addTask() {
+    const addNewTask = document.getElementById('new_task_title').value.trim();
+    if(taskFieldsAreValid(addNewTask)) {
+
+        const dataForApiRequest = {
+            title: addNewTask
+        }
+
+        $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
+            url: API_BASE_URL + 'todo/create/',
+            method: 'POST',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                displaySuccessToast('New Task added!');
+                getTasks();
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('Can\'t add tasks!');
+            }
+        })
+        document.getElementById('new_task_title').value='';
+    }
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to add the task to the backend server.
