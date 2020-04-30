@@ -71,19 +71,56 @@ function register() {
 }
 
 function login() {
-    /***
-     * @todo Complete this function.
-     * @todo 1. Write code for form validation.
-     * @todo 2. Fetch the auth token from backend and login the user.
-     */
+    const user = document.getElementById('inputUsername').value.trim();
+    const pass = document.getElementById('inputPassword').value;
+    displayInfoToast("Logging In");
+    if(user==""){
+      displayErrorToast("Username is Required");
+    }
+    if(pass==""){
+      displayErrorToast("Password is Required");
+    }
+    var reqdata={username:user,password:pass};
+    $.ajax({
+      url:API_BASE_URL+'auth/login/',
+      method:'POST',
+      data:reqdata,
+      success: function(data){
+        localStorage.setItem('token',data.token);
+        window.location.href = '/';
+      },
+      error:function(xhr, status, err){
+        if (status==400) displayErrorToast('Invalid credentials');
+        else displayErrorToast('An Error Ocurred while Loading ! ');
+      }
+    })
+
 }
 
 function addTask() {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to add the task to the backend server.
-     * @todo 2. Add the task in the dom.
-     */
+
+    const toAdd = document.getElementById('add_task').value.trim();
+    if(toAdd==""){
+      displayErrorToast("No Task to Add");
+      return;
+    }
+    const reqdata = {title:toAdd}
+    displayInfoToast('Task being added.');
+    $.ajax({
+      headers: {Authorization: 'Token '+localStorage.getItem('token')},
+      url: API_BASE_URL + 'todo/create/',
+      method: 'POST',
+      data: reqdata,
+      success: function (data){
+        displaySuccessToast('Added Task Successfully');
+        getTasks();
+        document.getElementById('add_task').value="";
+      },
+      error: function(xhr,status,err){
+        displayErrorToast('Unable to Add the task');
+        console.log(xhr.status);
+      }
+    })
 }
 
 function editTask(id) {
@@ -92,19 +129,61 @@ function editTask(id) {
     document.getElementById('input-button-' + id).classList.remove('hideme');
     document.getElementById('done-button-' + id).classList.remove('hideme');
 }
-
+function doneEdit(id) {
+    document.getElementById('task-' + id).classList.remove('hideme');
+    document.getElementById('task-actions-' + id).classList.remove('hideme');
+    document.getElementById('input-button-' + id).classList.add('hideme');
+    document.getElementById('done-button-' + id).classList.add('hideme');
+}
 function deleteTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to delete the task to the backend server.
-     * @todo 2. Remove the task from the dom.
-     */
+    displayInfoToast('Task being deleted');
+    const reqdata =  { id: id }
+    const authhead= { Authorization: 'Token '+localStorage.getItem('token') }
+    $.ajax({
+      headers: authhead,
+      url: API_BASE_URL + 'todo/'+id+'/' ,
+      method: 'DELETE',
+      success: function(data){
+          displaySuccessToast('Deleted Task Successfully');
+          document.getElementById('item-'+id).remove();
+      },
+      error: function(xhr,status,err){
+        displayErrorToast('Unable to Delete the task');
+      }
+    })
+
+
 }
 
 function updateTask(id) {
-    /**
-     * @todo Complete this function.
-     * @todo 1. Send the request to update the task to the backend server.
-     * @todo 2. Update the task in the dom.
-     */
+    const toUp = document.getElementById('input-button-'+id ).value.trim();
+    if(toUp=="")
+    {
+      displayErrorToast('The Text is empty , Delete it instead');
+      return;
+    }
+    const authhead= {
+      Authorization: 'Token '+localStorage.getItem('token')
+     }
+     const reqdata={
+       title:toUp
+     }
+     $.ajax({
+       url: API_BASE_URL+'todo/'+id+'/',
+       method: "PATCH",
+       headers: authhead,
+       data: reqdata,
+       success: function(data){
+         doneEdit(id);
+         document.getElementById('task-'+id) = toUp;
+         displaySuccessToast('Updated Task Successfully');
+
+         //doneEdit(id);
+       },
+       error: function(xhr,status,err){
+         displayErrorToast('Unable to Update the task');
+       }
+     })
+
+
 }
