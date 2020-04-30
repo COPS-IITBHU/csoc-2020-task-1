@@ -161,7 +161,6 @@ function deleteTask(id) {
         success: function(status,xhr){
             displaySuccessToast("Task deleted succesfully");
             document.getElementById(id).remove();
-            getTasks();
         },
         error: function(xhr,status,err){
             displayErrorToast('Not Deleted, Plz Try Again!!');
