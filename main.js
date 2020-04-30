@@ -134,7 +134,6 @@ function taskFieldsAreValid(textItem) {
 function addTask() {
     const addNewTask = document.getElementById('new_task_title').value.trim();
     if(taskFieldsAreValid(addNewTask)) {
-
         const dataForApiRequest = {
             title: addNewTask
         }
@@ -151,7 +150,7 @@ function addTask() {
                 getTasks();
             },
             error: function(xhr, status, err) {
-                displayErrorToast('Can\'t add tasks!');
+                displayErrorToast('Adding task failed, try again!');
             }
         })
         document.getElementById('new_task_title').value='';
@@ -171,6 +170,25 @@ function editTask(id) {
 }
 
 function deleteTask(id) {
+    const dataForApiRequest = {
+        id: id
+    }
+
+    $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token'),
+        },
+        url: API_BASE_URL + 'todo/' + id + '/',
+        method: 'DELETE',
+        data : dataForApiRequest,
+        success: function(data, status, xhr) {
+            displaySuccessToast('Task deleted!');
+            getTasks();
+        },
+        error: function(xhr, status, err) {
+            displayErrorToast('Deleting task failed, try again!');
+        }
+    })
     /**
      * @todo Complete this function.
      * @todo 1. Send the request to delete the task to the backend server.
@@ -183,7 +201,7 @@ function updateTask(id) {
     const newText = document.getElementById('input-button-' + id).value.trim();
     
     if (taskFieldsAreValid(newText)) {
-        displayInfoToast("Please wait...");
+        // displayInfoToast("Please wait...");
 
         const dataForApiRequest = {
             // id: id,
@@ -209,8 +227,8 @@ function updateTask(id) {
                 // window.location.href = '/';
             },
             error: function(xhr, status, err) {
-                displayErrorToast('Some error occured, try again!');
-                console.log(status);
+                displayErrorToast('Updating task failed, try again!');
+                // console.log(status);
             }
         })
     }
