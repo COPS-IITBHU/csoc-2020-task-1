@@ -82,7 +82,6 @@ function greet() {
     $.ajax({
         url: API_BASE_URL + 'auth/profile/',
         method: 'GET',
-        data: dataFromApi,
         success: function(data, status, xhr) {
             localStorage.setItem('name', data.name);
             displaySuccessToast("Welcome "+localStorage.getItem('name')+"!");
@@ -112,9 +111,9 @@ function login() {
             success: function(data, status, xhr) {
                 // displaySuccessToast("Welcome")
                 localStorage.setItem('token', data.token);
-                window.location.href = '/';
                 displaySuccessToast('Login success!');
                 greet();
+                window.location.href = '/';
             },
             error: function(xhr, status, err) {
                 displayErrorToast('Credentials are incorrect!');
@@ -192,6 +191,9 @@ function updateTask(id) {
         }
 
         $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token'),
+            },
             url: API_BASE_URL + 'todo/' + id,
             method: 'PUT',
             data: dataForApiRequest,
