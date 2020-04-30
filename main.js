@@ -113,6 +113,7 @@ function login() {
                 // displaySuccessToast("Welcome")
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
+                displaySuccessToast('Login success!');
                 greet();
             },
             error: function(xhr, status, err) {
