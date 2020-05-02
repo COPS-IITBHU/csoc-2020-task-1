@@ -130,7 +130,9 @@ function addTask() {
   //console.log("Token " + localStorage.getItem("token"));
   const task = document.getElementById("addTask").value;
   //console.log(task);
-
+if(task====" ")
+  displayErrorToast("Please enter a task");
+  else{
   const taskData = {
     title: task,
   };
@@ -149,6 +151,7 @@ function addTask() {
       console.log(xhr);
     },
   });
+  }
 }
 
 function editTask(id) {
