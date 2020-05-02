@@ -145,6 +145,8 @@ function addTask() {
              }
          })
      }
+     else
+     displayErrorToast("Something went wrong, try again!");
 
      document.getElementById("inputTask").value = "";
 }
