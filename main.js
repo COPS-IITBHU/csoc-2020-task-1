@@ -130,27 +130,26 @@ function addTask() {
   //console.log("Token " + localStorage.getItem("token"));
   const task = document.getElementById("addTask").value;
   //console.log(task);
-if(task====" ")
-  displayErrorToast("Please enter a task");
-  else{
-  const taskData = {
-    title: task,
-  };
-  $.ajax({
-    headers: {
-      Authorization: "Token " + localStorage.getItem("token"),
-    },
-    url: API_BASE_URL + "todo/create/",
-    method: "POST",
-    data: taskData,
-    success: function (data, status, xhr) {
-      displayInfoToast("Task Added Successfully!");
-      window.location.reload();
-    },
-    error: function (xhr, status, data) {
-      console.log(xhr);
-    },
-  });
+  if (task === " ") displayErrorToast("Please enter a task");
+  else {
+    const taskData = {
+      title: task,
+    };
+    $.ajax({
+      headers: {
+        Authorization: "Token " + localStorage.getItem("token"),
+      },
+      url: API_BASE_URL + "todo/create/",
+      method: "POST",
+      data: taskData,
+      success: function (data, status, xhr) {
+        displayInfoToast("Task Added Successfully!");
+        window.location.reload();
+      },
+      error: function (xhr, status, data) {
+        console.log(xhr);
+      },
+    });
   }
 }
 
