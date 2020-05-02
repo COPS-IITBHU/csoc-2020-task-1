@@ -154,6 +154,9 @@ function editTask(id) {
     document.getElementById('task-actions-' + id).classList.add('hideme');
     document.getElementById('input-button-' + id).classList.remove('hideme');
     document.getElementById('done-button-' + id).classList.remove('hideme');
+    const oldTitle = document.getElementById("task-"+id).innerHTML;
+    console.log(oldTitle);
+    document.getElementById("input-button-"+id).value = oldTitle;
 }
 
 function deleteTask(id) {
@@ -190,6 +193,7 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    
     const newTitle = document.getElementById("input-button-"+id).value;
     console.log(newTitle);
     const dataForApiRequest={
