@@ -76,6 +76,36 @@ function login() {
      * @todo 1. Write code for form validation.
      * @todo 2. Fetch the auth token from backend and login the user.
      */
+
+    // form validiation
+    const username = document.getElementById("inputUsername").value;
+    
+    const password = document.getElementById("inputPassword").value;
+   
+    if(username.length>0 && password.length>0)
+    {
+        const dataForApiRequest = {
+            username: username,
+            password: password
+        }
+
+        $.ajax({
+            url: API_BASE_URL + 'auth/login/',
+            method: 'POST',
+            data: dataForApiRequest,
+            success: function(data, status, xhr) {
+                localStorage.setItem('token', data.token);
+                window.location.href = '/';
+            },
+            error: function(xhr, status, err) {
+                displayErrorToast('No Account Found. Click on register to create account');
+            }
+        })
+    }
+    else{
+        displayErrorToast("Please enter valid credentials!");
+    }
+
 }
 
 function addTask() {
@@ -84,6 +114,41 @@ function addTask() {
      * @todo 1. Send the request to add the task to the backend server.
      * @todo 2. Add the task in the dom.
      */
+
+  
+     const taskName = document.getElementById("inputTask").value;
+
+     
+
+     if(taskName.length>0)
+     {
+         const dataForApiRequest = {
+             title : taskName ,
+         }
+
+         $.ajax({
+            headers: {
+                Authorization: 'Token ' + localStorage.getItem('token')
+            },
+
+             url: API_BASE_URL + 'todo/create/',
+             method: 'POST',
+             data: dataForApiRequest,
+             success: function(data,  status, xhr){
+                 console.log("SUCCESS!");
+                 displaySuccessToast("Task added!");
+                 getTasks();
+             },
+             error: function(xhr, status, err){
+                 console.log("DENIED");
+                 displayErrorToast("Something went wrong, try again!");
+             }
+         })
+     }
+     else
+     displayErrorToast("Something went wrong, try again!");
+
+     document.getElementById("inputTask").value = "";
 }
 
 function editTask(id) {
@@ -91,6 +156,9 @@ function editTask(id) {
     document.getElementById('task-actions-' + id).classList.add('hideme');
     document.getElementById('input-button-' + id).classList.remove('hideme');
     document.getElementById('done-button-' + id).classList.remove('hideme');
+    const oldTitle = document.getElementById("task-"+id).innerHTML;
+    console.log(oldTitle);
+    document.getElementById("input-button-"+id).value = oldTitle;
 }
 
 function deleteTask(id) {
@@ -99,6 +167,26 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
+    
+        
+     $.ajax({
+        headers: {
+            Authorization: 'Token ' + localStorage.getItem('token')
+        },
+
+         url: API_BASE_URL + 'todo/' + id + '/',
+         method: 'DELETE',
+
+         success: function(data, status, xhr )
+         {
+             $("#" + id).remove();
+             displaySuccessToast("Deleted!");
+         },
+         error: function(xhr, status, err)
+         {
+             displayErrorToast("Not deleted, try again!");
+         }
+     })
 }
 
 function updateTask(id) {
@@ -107,4 +195,35 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    
+    const newTitle = document.getElementById("input-button-"+id).value;
+    console.log(newTitle);
+    const dataForApiRequest={
+        title: newTitle
+    }
+     $.ajax({
+         headers: {
+             Authorization: 'Token ' + localStorage.getItem('token')
+         },
+
+         url: API_BASE_URL + 'todo/' + id + '/',
+         method: 'PUT',
+         data: dataForApiRequest,
+         success: function(data, status, xhr)
+         {
+             displaySuccessToast("Edited!");
+            
+             document.getElementById('input-button-' + id).classList.add('hideme');
+    document.getElementById('done-button-' + id).classList.add('hideme');
+    document.getElementById("task-"+id).innerHTML = data.title;
+    document.getElementById('task-' + id).classList.remove('hideme');
+    document.getElementById('task-actions-' + id).classList.remove('hideme');
+    
+
+         },
+         error: function(xhr, status, err)
+         {
+            displayErrorToast("Not able to edit, try again!")
+         }
+     })
 }
