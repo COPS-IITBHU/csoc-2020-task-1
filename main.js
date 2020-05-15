@@ -103,7 +103,7 @@ function login() {
 function additinDOM(title, id) {
     folder = document.getElementsByClassName("list-group todo-available-tasks")[0];
     folder.innerHTML += '<li class="list-group-item d-flex justify-content-between align-items-center" id="' + id + '">\n' +
-                    '<input id="input-button-' + id + '" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">\n' +
+                    '<input id="input-button-' + id + '" type="text" class="form-control todo-edit-task-input hideme" placeholder="' + title + '">\n' +
                     '<div id="done-button-' + id + '"  class="input-group-append hideme">\n' + 
                     '   <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(' + id + ')">Done</button>\n</div>' +
                     '<div id="task-'+ id + '" class="todo-task">' + title + '</div>\n' + 
@@ -126,7 +126,7 @@ function addTask() {
     displayInfoToast("Adding Task...");
     const dataForApiRequest = {
         title: task
-    }  
+    }
     $.ajax({
         headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
@@ -206,6 +206,7 @@ function updateTask(id) {
             document.getElementById('input-button-' + id).value = "";
             document.getElementById('done-button-'+id).classList.add('hideme');
             document.getElementById('input-button-'+id).classList.add('hideme');
+            document.getElementById('input-button-'+id).placeholder = title;
             document.getElementById('task-'+id).classList.remove('hideme');
             document.getElementById('task-actions-'+id).classList.remove('hideme');    
         },
