@@ -118,12 +118,15 @@ function additinDOM(title, id) {
 }
 
 function addTask() {
-    displayInfoToast("Adding Task...");
     const task = document.getElementById('add_task').value.trim();
+    if (task == "") {
+        displayErrorToast('Invalid Task');
+        return;
+    }
+    displayInfoToast("Adding Task...");
     const dataForApiRequest = {
         title: task
-    }
-
+    }  
     $.ajax({
         headers: {
             Authorization: 'Token ' + localStorage.getItem('token'),
