@@ -61,6 +61,7 @@ function register() {
             data: dataForApiRequest,
             success: function(data, status, xhr) {
                 localStorage.setItem('token', data.token);
+                console.log(data.token);
                 displayInfoToast("Please wait...");
                 window.location.href = '/';
             },
@@ -73,7 +74,7 @@ function register() {
 
 function login() {
 
-    displayInfoToast("login with your registered username and password ")
+    displayInfoToast("login with your registered username and password ");
     displayInfoToast("New User? then Register yourself to start  !");
 
     const username = document.getElementById("inputUsername").value.trim();
@@ -95,6 +96,7 @@ function login() {
         data : dataForApiRequest,
         success : function(data, status, xhr) {
             localStorage.setItem('token',data.token);
+            console.log(data.token);
             displayInfoToast("Please wait...");
             window.location.href = '/';
         },
@@ -108,15 +110,17 @@ function login() {
 function addTask() {
    
    text=document.getElementById("takeinput").value.trim();
-   if(text=""){
+   if(text==""){
     displayInfoToast("Opps ! You Haven't Entered the Task ! ");
     return ;
    }
+   console.log(text)
+   
    const dataForApiRequest={
-    title: text,
+    title : text,
    }
    $.ajax({
-    headers:{Authorization:"Token "+localStorage.getItem('token'),},
+    headers:{Authorization:"Token "+localStorage.token,},
      url: API_BASE_URL + 'todo/create/',
      method: 'POST',
      data: dataForApiRequest,
@@ -126,7 +130,7 @@ function addTask() {
      },
      error: function(xhr,status,err){
          if(xhr.status==0)
-            displayErrorToast("Inter Connection Lost");
+            displayErrorToast("Internet Connection Lost");
         else if(xhr.status==500)
             displayErrorToast("Problem from server end! Please try later");
      }
@@ -165,7 +169,7 @@ function deleteTask(id) {
 function updateTask(id) {
 
     let x = document.getElementById("input-button-"+id).value;
-    if(x=""){
+    if(x==""){
      displayInfoToast("Opps ! You Haven't Entered the Task ! ");
      return ;
  }
