@@ -1,5 +1,4 @@
 <html lang="en">
-
 <head>
     <title>Tasks - Todo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -16,21 +15,15 @@
     <meta name=viewport content="width=device-width,initial-scale=1">
     <script src="auth_required.js"></script>
     <script src="main.js"></script>
-    <style>
-        .hideme {
-            display: none !important;
-        }
-    </style>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-navbar">
         <a class="navbar-brand" href="#">Todo</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -54,6 +47,7 @@
         </div>
     </nav>
     <center>
+        <!-- Main Content -->
         <div class="input-group mb-3 todo-add-task">
             <input type="text" class="form-control" placeholder="Enter Task" id='addTask'>
             <div class="input-group-append">
