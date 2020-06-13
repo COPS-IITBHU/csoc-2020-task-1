@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+
 .todo-profile-name {
     padding: 5px;
 }
@@ -34,4 +36,38 @@
 
 .todo-task {
     max-width:260px;
+}
+
+.hideme {
+    display: none !important;
+}
+
+/* Added some style */
+body {
+    background-color: #031321;
+    font-family: 'Nunito', sans-serif;
+    color: #2196F3;
+    text-align: center;
+}
+
+.bg-navbar {
+    background-color: #031321;
+}
+
+button:hover {
+    background: rgba(33, 150, 243, 0.8);
+    box-shadow: 0 0 10px #2196F3, 0 0 40px #2196F3, 0 0 80px #2196F3;
+}
+
+.list-group-item {
+    background-color: lightgray;
+    color: black;
+}
+
+.btn-outline-warning:hover {
+    box-shadow: 0 0 10px #eec853, 0 0 40px #eec853, 0 0 80px #eec853;
+}
+
+.btn-outline-danger:hover {
+    box-shadow: 0 0 10px #d6969d, 0 0 40px #d6969d, 0 0 80px #d6969d;
 }
