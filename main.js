@@ -76,6 +76,23 @@ function login() {
      * @todo 1. Write code for form validation.
      * @todo 2. Fetch the auth token from backend and login the user.
      */
+    const dataForApiRequest =  {
+        username: document.getElementById('inputUsername').value,
+        password: document.getElementById('inputPassword').value
+    };
+    $.ajax({
+        url: API_BASE_URL + 'auth/login/',
+        method: "POST",
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            localStorage.setItem('token', data.token);
+            window.location.href = '/';
+            displaySuccessToast('Welcome back');
+        },
+        error: function(data, status, xhr) {
+            displayErrorToast('Invalid credentials, try again');
+        }
+    });
 }
 
 function addTask() {
@@ -84,9 +101,30 @@ function addTask() {
      * @todo 1. Send the request to add the task to the backend server.
      * @todo 2. Add the task in the dom.
      */
+    const dataForApiRequest = {
+        title: document.getElementById('addTask').value
+    };
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem('token')
+        },
+        url: API_BASE_URL + 'todo/create/',
+        method: "POST",
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            $('#addTask').val('');
+            displaySuccessToast("Task added");
+            getTasks();
+        },
+        error: function(data, status, xhr) {
+            displayErrorToast('Task could not be added, please try again');
+        }
+    });
 }
 
 function editTask(id) {
+    // Text field by default now retains the unaltered task
+    $('#input-button-'+id).val($('#task-'+id).text());
     document.getElementById('task-' + id).classList.add('hideme');
     document.getElementById('task-actions-' + id).classList.add('hideme');
     document.getElementById('input-button-' + id).classList.remove('hideme');
@@ -99,6 +137,21 @@ function deleteTask(id) {
      * @todo 1. Send the request to delete the task to the backend server.
      * @todo 2. Remove the task from the dom.
      */
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem('token')
+        },
+        url: API_BASE_URL + 'todo/' + id + '/',
+        method: "DELETE",
+        success: function(data, status, xhr) {
+            console.log(id);
+            displaySuccessToast('Task deleted');
+            $('#'+id).remove();
+        },
+        error: function(data, status, xhr) {
+            displayErrorToast('Task could not be deleted, please try again');
+        }
+    })
 }
 
 function updateTask(id) {
@@ -107,4 +160,26 @@ function updateTask(id) {
      * @todo 1. Send the request to update the task to the backend server.
      * @todo 2. Update the task in the dom.
      */
+    const dataForApiRequest = {
+        title: document.getElementById('input-button-'+id).value
+    };
+    $.ajax({
+        headers: {
+            Authorization: "Token " + localStorage.getItem('token')
+        },
+        url: API_BASE_URL + 'todo/' + id + '/',
+        method: "PATCH",
+        data: dataForApiRequest,
+        success: function(data, status, xhr) {
+            $('#task-'+id).text(document.getElementById('input-button-'+id).value);
+            $('#task-'+id).toggleClass('hideme');
+            $('#input-button-'+id).toggleClass('hideme');
+            $('#done-button-'+id).toggleClass('hideme');
+            $('#task-actions-'+id).removeClass('hideme');
+            displaySuccessToast('Updated Task');
+        },
+        error: function(data, status, xhr) {
+            displayErrorToast('Task could not be updated');
+        }
+    })
 }
