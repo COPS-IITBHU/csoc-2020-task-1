@@ -55,63 +55,15 @@
     </nav>
     <center>
         <div class="input-group mb-3 todo-add-task">
-            <input type="text" class="form-control" placeholder="Enter Task">
+            <input type="text" class="form-control" placeholder="Enter Task" id="add_task">
             <div class="input-group-append">
-                <button type="button" class="btn btn-outline-success" onclick="addTask()">Add Task</button>
+                <button type="button" class="btn btn-outline-success" onclick="addTask()" >Add Task</button>
             </div>
         </div>
         <ul class="list-group todo-available-tasks">
-            <span class="badge badge-primary badge-pill todo-available-tasks-text">
+            <span class="badge badge-primary badge-pill todo-available-tasks-text" id="avltsk">
                 Available Tasks
             </span>
-
-
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-1" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
-                    <div id="done-button-1"  class="input-group-append hideme">
-                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(1)">Done</button>
-                    </div>
-                    <div id="task-1" class="todo-task">
-                        Sample Task 1
-                    </div>
-
-                    <span id="task-actions-1">
-                        <button style="margin-right:5px;" type="button" onclick="editTask(1)"
-                            class="btn btn-outline-warning">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
-                                width="18px" height="20px">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="deleteTask(1)">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
-                                width="18px" height="22px">
-                        </button>
-                    </span>
-            </li>
-
-
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input id="input-button-2" type="text" class="form-control todo-edit-task-input hideme" placeholder="Edit The Task">
-                    <div id="done-button-2" class="input-group-append hideme">
-                        <button class="btn btn-outline-secondary todo-update-task" type="button" onclick="updateTask(2)">Done</button>
-                    </div>
-
-                    <div id="task-2" class="todo-task">
-                        Sample Task 2
-                    </div>
-                    <span id="task-actions-2">
-                        <button style="margin-right:5px;" type="button" onclick="editTask(2)"
-                            class="btn btn-outline-warning">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486663/CSOC/edit.png"
-                                width="18px" height="20px">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="deleteTask(2)">
-                            <img src="https://res.cloudinary.com/nishantwrp/image/upload/v1587486661/CSOC/delete.svg"
-                                width="18px" height="22px">
-                        </button>
-                    </span>
-            </li>
-
-
         </ul>
     </center>
     <script src="init.js"></script>
