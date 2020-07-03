@@ -78,11 +78,15 @@ function login() {
      */
      const username = document.getElementById('inputUsername').value.trim();
     const password = document.getElementById('inputPassword').value;
+    if (localStorage.getItem('token')){
+        window.location.href='/';
+        }
     if (username ==='' || password ==='')
     { displayErrorToast('Please fill the required fields');
-    
+      return ;
     }
     else {
+        displayInfoToast("Please wait...");
     	const loginData={
      "username":username,
      "password":password
@@ -92,9 +96,10 @@ function login() {
             method: 'POST',
             data: loginData,
             success: function(data, status, xhr) {
+                displaySuccessToast('Login successfull');
                 localStorage.setItem('token', data.token);
                 window.location.href = '/';
-                displaySuccessToast('Login successfull');
+                
             },
             error: function(xhr, status, err) {
                 displayErrorToast('Some error occured');
@@ -141,10 +146,12 @@ function addTask() {
 }
 
 function editTask(id) {
-    document.getElementById('task-' + id).classList.add('hideme');
-    document.getElementById('task-actions-' + id).classList.add('hideme');
-    document.getElementById('input-button-' + id).classList.remove('hideme');
-    document.getElementById('done-button-' + id).classList.remove('hideme');
+    var title=document.getElementById('task-'+id).innerText;
+    document.getElementById('task-' + id).classList.toggle('hideme');
+    document.getElementById('task-actions-' + id).classList.toggle('hideme');
+    document.getElementById('input-button-' + id).classList.toggle('hideme');
+    document.getElementById('input-button-'+id).setAttribute('placeholder',title);
+    document.getElementById('done-button-' + id).classList.toggle('hideme');
 }
 
 function deleteTask(id) {
@@ -161,7 +168,9 @@ function deleteTask(id) {
         method: 'DELETE' ,
         success: function(data, status, xhr) {
             displaySuccessToast('Task deleted successfully');
-            getTasks();
+            document.getElementById('li-'+id).remove();
+            
+            
         },
         error: function(xhr, status, err){
             displayErrorToast('Some error occured!')
@@ -178,6 +187,7 @@ function updateTask(id) {
      const updatedTask = document.getElementById('input-button-' + id ).value.trim();
     if(updatedTask === ''){
             displayErrorToast('Please give valid input!');
+            return ;
     }
     else{
         updatedData = {
@@ -192,11 +202,14 @@ function updateTask(id) {
             data:updatedData,
             success: function(data, status, xhr) {
                 displaySuccessToast('Task updated successfully');
-                getTasks();
+                document.getElementById('task-'+id).innerHTML=updatedTask;
+                editTask(id);
+                
+                
             },
             error: function(xhr, status, err){
                 displayErrorToast('Some error occured!')
-                getTasks();
+                
             }
         })
     }
