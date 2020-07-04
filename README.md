@@ -1,6 +1,6 @@
 
 
-# Todo Application - CSoC Dev Task 1
+# Todo Application - CSoC Dev Task 1  [![Netlify Status](https://api.netlify.com/api/v1/badges/7f0fe615-29ae-4484-a290-ea67468b912d/deploy-status)](https://app.netlify.com/sites/epic-northcutt-b7b8b9/deploys)
 
 ## Introduction
 In this task you will be working on a todo application made using basic HTML, CSS and JS. The main motive of this task is to make you familiar with:
